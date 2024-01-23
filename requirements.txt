@@ -1,1 +1,2 @@
+pynvim
 google-cloud-translate
