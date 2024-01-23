@@ -1,4 +1,4 @@
-# Translate.nvim
+# google-translate.nvim
 
 As a develop, we are often asked to change some text in our code base. It gets kind of annoying when there's like different languages to change.
 
@@ -8,30 +8,55 @@ I am lazy, So I made this plugin.
 
 ## Installation
 
-set `GOOGLE_TRANSLATE_API_KEY`
+set `GOOGLE_APPLICATION_CREDENTIALS` and `GOOGLE_API_PROJECT_ID`
+
 ```shell
-export GOOGLE_TRANSLATE_API_KEY="<your key here>"
+export GOOGLE_APPLICATION_CREDENTIALS="<your json file path here downloaded from google cloud console>"
+export GOOGLE_API_PROJECT_ID="<your project id>"
 ```
 
-install using [packer.nvim](https://github.com/wbthomason/packer.nvim)
+Example:
+
+```shell
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/.local/neovim-api.json"
+export GOOGLE_API_PROJECT_ID="neovim-api"
+```
+
+* [lazy.nvim](https://github.com/folke/lazy.nvim)
+```lua
+{
+  '~/projects/google-translate.nvim',
+  build = { 'pip install -r requirements.txt', ':UpdateRemotePlugins' },
+  config = function()
+    require('google-translate').setup()
+  end,
+}
+```
+
+* [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use {
   'kiddos/translate.nvim',
-  rocks = {
-    'lua-cjson',
-    'luasec',
-  }
+  run = { 'pip install -r requirements.txt', ':UpdateRemotePlugins' },
+  config = function()
+    require('google-translate').setup()
+  end,
 }
 ```
 
-```
-local translate = require('translate')
-translate.setup()
-```
+## Setting
 
 add your own language
 
 ```lua
 vim.api.nvim_create_user_command('TranslateJP', function() translate.translate('ja') end, opts)
+```
+
+## Existing Commands
+
+```vim
+:TranslateCN
+:TranslateTW
+:TranslateEN
 ```
