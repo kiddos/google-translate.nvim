@@ -1,0 +1,7 @@
+app.error.general=An unexpected error occurred. Please try again.
+app.success.operationComplete=Operation completed successfully!
+app.info.dataNotFound=No data found for your request.
+app.warning.diskSpaceLow=Warning: Disk space is running low.
+user.create.success=User account created successfully.
+user.create.failed=Failed to create user account.
+item.delete.confirm=Are you sure you want to delete this item?
