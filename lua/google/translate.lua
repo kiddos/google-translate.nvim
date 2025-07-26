@@ -1,6 +1,6 @@
 local M = {}
 
-local json = require('vim.json')
+local json = vim.json
 
 local function get_access_token()
   local token = vim.fn.system('gcloud auth application-default print-access-token')
@@ -25,11 +25,11 @@ local function api_request(url, body)
     json.encode(body),
     url,
   }
-  local response = vim.fn.system(cmd)
-  return json.decode(response)
+  local response = vim.system(cmd, { text = true }):wait()
+  return json.decode(response.stdout)
 end
 
-function M.translate_text(text, target_language_code)
+M.translate_text = function(text, target_language_code)
   local url = 'https://translation.googleapis.com/v3/{parent}:translateText'
   local body = {
     contents = { text },
@@ -38,7 +38,7 @@ function M.translate_text(text, target_language_code)
   return api_request(url, body)
 end
 
-function M.detect_language(text)
+M.detect_language = function(text)
   local url = 'https://translation.googleapis.com/v3/{parent}:detectLanguage'
   local body = {
     content = text,
@@ -46,7 +46,7 @@ function M.detect_language(text)
   return api_request(url, body)
 end
 
-function M.get_supported_languages()
+M.get_supported_languages = function()
   local url = 'https://translation.googleapis.com/v3/{parent}/supportedLanguages'
   local token = get_access_token()
   local project_id = os.getenv('GOOGLE_API_PROJECT_ID')
@@ -61,8 +61,8 @@ function M.get_supported_languages()
     'Authorization: Bearer ' .. token,
     url,
   }
-  local response = vim.fn.system(cmd)
-  return json.decode(response)
+  local response = vim.system(cmd):wait()
+  return json.decode(response.stdout)
 end
 
 return M
